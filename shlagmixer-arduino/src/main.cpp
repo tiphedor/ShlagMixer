@@ -1,8 +1,7 @@
-#include "MIDIUSB.h"
+#include "midi.hpp"
 
 #define FADERS_COUNT 5
 #define SWITCHES_COUNT 10
-
 const int FADERS_PINS[] = { A0, A1, A2, A3, A4 };
 const int SWITCHES_PINS[] = { 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 
@@ -55,22 +54,4 @@ void loop() {
   }
 
   delay(25);
-}
-
-
-
-// MIDIUSB stuff
-void noteOn(byte channel, byte pitch, byte velocity) {
-  midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
-  MidiUSB.sendMIDI(noteOn);
-}
-
-void noteOff(byte channel, byte pitch, byte velocity) {
-  midiEventPacket_t noteOff = {0x08, 0x80 | channel, pitch, velocity};
-  MidiUSB.sendMIDI(noteOff);
-}
-
-void controlChange(byte channel, byte control, byte value) {
-  midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
-  MidiUSB.sendMIDI(event);
 }
