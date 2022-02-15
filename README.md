@@ -10,7 +10,7 @@ The point of this project is to control [Voicemeeter Banana](https://vb-audio.co
  - Wires (lol)
  - 3d printer
  
- ## Electronics
+## Electronics
  
 Wiring is fairly easy, one side of each button goes to ground, middle sides (COM) to digital pins D4-D13. For the faders, you can use this (very shitty) image: 
  
@@ -22,3 +22,6 @@ Here's a rough schematic, disclaimer I've drawn it after putting the project tog
  
 ![](/schematics.png)
 
+## 3D printed parts
+
+You will need to print the mixer itself `shlagMixer.stl`, as well as 5 faders knobs `faderKnob.stl`. You can use whatever settings you'd like, neither are very hard to print. Mine were printed on a Prusa Mk3s, Prusament Black PLA, default profile, 0.2mm layer height. No supports required, and no raft either.
