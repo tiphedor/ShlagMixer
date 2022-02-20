@@ -2,6 +2,18 @@
 
 ![](/pics/finishedProduct.jpg)
 
+## Table of Contents
+
+  - [Hardware](#hardware)
+    + [BOM](#bom)
+    + [Electronics](#electronics)
+  - [Software](#software)
+    + [Arduino](#arduino)
+    + [AutoHotKey](#autohotkey)
+  - [3D printed parts](#3d-printed-parts)
+
+--- 
+
 The point of this project is to control [Voicemeeter Banana](https://vb-audio.com/Voicemeeter/banana.htm) - which is the audio mixer I use during my [Twitch streams](https://twitch.tv/tiphedor) - with a physical controller. This version can control the gain of 5 channels, as well as toggle said channels to 2 outputs. It can be adapted and scaled up/down to suit different needs fairly easily.
 
 ## Hardware
