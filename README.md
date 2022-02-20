@@ -14,13 +14,13 @@ The point of this project is to control [Voicemeeter Banana](https://vb-audio.co
  
 Wiring is fairly easy, one side of each button goes to ground, middle sides (COM) to digital pins D4-D13. For the faders, you can use this (very shitty) image: 
  
-![](/pinout.jpg)
+![](/pics/pinout.jpg)
  
 Connect red1 to ground, red2 to A0-A4, and red3 to +5V. You can leave blue1, blue2 and blue3 NC.
  
 Here's a rough schematic, disclaimer I've drawn it after putting the project together, so it's probably not very accurate :D 
  
-![](/schematics.png)
+![](/pics/schematics.png)
 
 ## 3D printed parts
 
