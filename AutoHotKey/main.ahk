@@ -2,8 +2,7 @@ targetMidiDeviceName := "Arduino Leonardo"
 global noteToStrip := { 21: 4, 20: 4, 19: 3, 18: 3, 17: 2, 16: 2, 15: 1, 14: 1, 13: 0, 12: 0}
 global faderToStrip := { 36: 0, 35: 1, 34: 2, 33: 3, 32: 4 }
 
-
-#include Midi.ahk
+#include AutoHotKey-MIDI/Midi.ahk
 #SingleInstance Force
 #persistent
 #NoEnv
@@ -24,21 +23,10 @@ HandleNote(event, statusToWrite) {
 }
 
 midi := new Midi()
-midiDevices := midi.QueryMidiInDevices()
-targetMidiDeviceId := ""
-
-for candidateDeviceId, candidateDevice in __midiInDevices  {
-	if (candidateDevice.deviceName == targetMidiDeviceName) {
-		targetMidiDeviceId := candidateDeviceId
-	}
+midiOpenRetCode := midi.OpenMidiInByName(targetMidiDeviceName)
+if (midiOpenRetCode < 0) {
+	MsgBox, Could not open MIDI device %targetMidiDeviceName%
 }
-
-if (targetMidiDeviceId == "") {
-	MsgBox, Could not find MIDI device nammed %targetMidiDeviceName%
-	ExitApp
-}
-
-midi.OpenMidiIn(targetMidiDeviceId)
 
 LoadRemote() {
 	VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
