@@ -1,0 +1,3 @@
+[submodule "AutoHotKey/AutoHotKey-MIDI"]
+	path = AutoHotKey/AutoHotKey-MIDI
+	url = https://github.com/fashberg/AutoHotkey-Midi.git
