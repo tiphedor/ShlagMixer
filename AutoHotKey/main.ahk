@@ -20,7 +20,6 @@ HandleNote(event, statusToWrite) {
 	target := Mod(note, 2) == 0 ? "A1" : "B2"
 
 	command := "Strip[" . noteToStrip[note] . "]." . target
-
 	DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", command, "Int", statusToWrite)
 }
 
@@ -68,9 +67,9 @@ MidiControlChange:
 Return
 
 MidiNoteOn:
-	HandleNote(midi.MidiIn(), 1)
+	HandleNote(midi.MidiIn(), 0)
 Return
 
 MidiNoteOff:
-	HandleNote(midi.MidiIn(), 0)
+	HandleNote(midi.MidiIn(), 1)
 Return
