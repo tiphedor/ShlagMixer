@@ -8,10 +8,8 @@ global faderToStrip := { 36: 0, 35: 1, 34: 2, 33: 3, 32: 4 }
 #NoEnv
 SendMode Input
 
-OnExit("DestroyRemote")
-LoadRemote()
-
-map(x,in_min,in_max,out_min,out_max) {
+;;;;;;;;	Utils functions		;;;;;;;;
+map(x, in_min, in_max, out_min, out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 }
 HandleNote(event, statusToWrite) {
@@ -22,30 +20,35 @@ HandleNote(event, statusToWrite) {
 	DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", command, "Int", statusToWrite)
 }
 
+;;;;;;;;	Init	;;;;;;;;
+OnExit("Cleanup")
+Cleanup() {
+	DllCall("VoicemeeterRemote64\VBVMR_Logout")
+	DllCall("FreeLibrary", "Ptr", VBVMRDLL)
+	midi.CloseMidiIns()
+	midi.CloseMidiOuts()
+}
+
+; MIDI
 midi := new Midi()
-midiOpenRetCode := midi.OpenMidiInByName(targetMidiDeviceName)
-if (midiOpenRetCode < 0) {
+midiOpenInRetCode := midi.OpenMidiInByName(targetMidiDeviceName)
+midiOpenOutRetCode := midi.OpenMidiOutByName(targetMidiDeviceName)
+if (midiOpenInRetCode < 0 or midiOpenOutRetCode < 0) {
 	MsgBox, Could not open MIDI device %targetMidiDeviceName%
+	ExitApp
 }
 
-LoadRemote() {
-	VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
-	retCode := DllCall("VoicemeeterRemote64\VBVMR_Login")
-	
-	if (%retCode% != 0 or %ErrorLevel% != 0) {	
-		MsgBox, 0x10, Error, An error occured.
-	}
+; VoiceMeeter
+VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
+retCode := DllCall("VoicemeeterRemote64\VBVMR_Login")
+if (%retCode% != 0 or %ErrorLevel% != 0) {	
+	MsgBox, 0x10, Error, An error occured.
 }
 
-DestroyRemote() {
-	logoutRetCode := DllCall("VoicemeeterRemote64\VBVMR_Logout")
-	freeRetCode := DllCall("FreeLibrary", "Ptr", VBVMRDLL)
+; Wwhen receiving this the Arduino will report the current state of its inputs - thus providing an initial state.
+midi.MidiOut("NoteOn", 1, 11, 64)
 
-	if (%ErrorLevel% != 0 or %logoutRetCode% != 0 or %freeRetCode% != 0) {	
-		MsgBox, 0x10, Error, An error occured.
-	}
-}
-
+; Control change = faders
 MidiControlChange:
 	event := midi.MidiIn()
 	mappedValue := map(event.value, 0, 127, -60.0, 12.0)
@@ -54,10 +57,10 @@ MidiControlChange:
 	DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", command, "Float", mappedValue)
 Return
 
+; Toggle switches
 MidiNoteOn:
 	HandleNote(midi.MidiIn(), 0)
 Return
-
 MidiNoteOff:
 	HandleNote(midi.MidiIn(), 1)
 Return
