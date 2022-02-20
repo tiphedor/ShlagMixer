@@ -1,6 +1,6 @@
 targetMidiDeviceName := "Arduino Leonardo"
-noteToStrip := { 21: 4, 20: 4, 19: 3, 18: 3, 17: 2, 16: 2, 15: 1, 14: 1, 13: 0, 12: 0}
-faderToStrip := { 36: 0, 35: 1, 34: 2, 33: 3, 32: 4 }
+global noteToStrip := { 21: 4, 20: 4, 19: 3, 18: 3, 17: 2, 16: 2, 15: 1, 14: 1, 13: 0, 12: 0}
+global faderToStrip := { 36: 0, 35: 1, 34: 2, 33: 3, 32: 4 }
 
 
 #include Midi.ahk
